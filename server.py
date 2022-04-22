@@ -30,6 +30,33 @@ def create_user():
 def new_user():
     return render_template("create_new_user.html")
 
+@app.route('/user/edit/<int:user_id>')
+def edit_user(user_id):
+    data ={ 
+        "id":user_id
+    }
+    return render_template("edit_user.html",user=User.get_one(data))
+
+@app.route('/user/delete/<int:user_id>')
+def delete_user(user_id):
+    data ={
+        'id': user_id,
+    }
+    User.destroy(data)
+    return redirect('/users')
+
+@app.route('/user/show/<int:user_id>')
+def show(user_id):
+    data ={ 
+        "id":user_id
+    }
+    return render_template("display_user.html",user=User.get_one(data))
+
+@app.route('/user/update',methods=['POST'])
+def update_user():
+    User.update(request.form)
+    return redirect('/users')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
